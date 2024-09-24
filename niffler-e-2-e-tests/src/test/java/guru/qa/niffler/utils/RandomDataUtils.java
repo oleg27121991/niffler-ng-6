@@ -6,23 +6,23 @@ public class RandomDataUtils {
 
     private final static Faker faker = new Faker();
 
-    public static String randomUsername() {
-        return faker.name().username();
-    }
+  public static String randomUsername() {
+    return faker.name().username();
+  }
 
-    public static String randomName() {
-        return faker.name().firstName();
-    }
+  public static String randomName() {
+    return faker.name().firstName();
+  }
 
-    public static String randomSurname() {
-        return faker.name().lastName();
-    }
+  public static String randomSurname() {
+    return faker.name().lastName();
+  }
 
     public static String randomCategoryName() {
         return faker.app().name();
     }
 
-    public static String randomSentence(int wordsCount) {
-        return faker.lorem().sentence(wordsCount);
-    }
+  public static String randomSentence(int wordsCount) {
+    return faker.lorem().sentence(wordsCount);
+  }
 }

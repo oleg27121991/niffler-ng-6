@@ -33,3 +33,4 @@ public class SpendingWebTest extends BaseWebTest {
     new MainPage().checkThatTableContainsSpending(newDescription);
   }
 }
+
