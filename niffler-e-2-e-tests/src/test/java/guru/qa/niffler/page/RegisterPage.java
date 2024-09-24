@@ -9,10 +9,13 @@ import static com.codeborne.selenide.Selenide.$$;
 
 public class RegisterPage {
 
-    private final SelenideElement usernameInput = $("#username");
-    private final SelenideElement passwordInput = $("#password");
-    private final SelenideElement passwordSubmitInput = $("#passwordSubmit");
-    private final SelenideElement submitRegistrationBtn = $(".form__submit");
+    private final SelenideElement
+            usernameInput = $("#username"),
+            passwordInput = $("#password"),
+            successRegisterMessage = $(".form__paragraph_success"),
+            signInBtn = $(".form_sign-in"),
+            passwordSubmitInput = $("#passwordSubmit"),
+            submitRegistrationBtn = $(".form__submit");
 
     public RegisterPage setUsername(String username) {
         usernameInput.setValue(username);
@@ -32,14 +35,10 @@ public class RegisterPage {
         submitRegistrationBtn.click();
     }
 
-    private final SelenideElement successRegisterMessage = $(".form__paragraph_success");
-
     public RegisterPage checkSuccessRegisterMessageIsDisplay() {
         successRegisterMessage.shouldBe(visible);
         return this;
     }
-
-    private final SelenideElement signInBtn = $(".form_sign-in");
 
     public void checkSignInBtnIsDisplayed() {
         signInBtn.shouldBe(visible);

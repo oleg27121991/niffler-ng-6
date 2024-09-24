@@ -19,11 +19,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 
 public class UsersQueueExtension implements
-    BeforeTestExecutionCallback,
-    AfterTestExecutionCallback,
-    ParameterResolver {
+        BeforeTestExecutionCallback,
+        AfterTestExecutionCallback,
+        ParameterResolver {
 
-  public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(UsersQueueExtension.class);
+    public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(UsersQueueExtension.class);
 
     public record StaticUser(
             String username,
@@ -86,7 +86,6 @@ public class UsersQueueExtension implements
                     while (user.isEmpty() && sw.getTime(TimeUnit.SECONDS) < 30) {
                         user = Optional.ofNullable(queue.poll());
                     }
-                    //  Обновляем тестовый кейс для Allure-отчёта, чтобы установить время начала теста на текущий момент.
                     Allure.getLifecycle().updateTestCase(testCase ->
                             testCase.setStart(new Date().getTime())
                     );
@@ -116,11 +115,13 @@ public class UsersQueueExtension implements
                 Map.class
         );
 
-        for (Map.Entry<UserType, StaticUser> e : map.entrySet()) {
-            UserType userType = e.getKey();
-            StaticUser user = e.getValue();
-            Queue<StaticUser> queue = getQueueByUserType(userType.value());
-            queue.add(user);
+        if (map != null) {
+            for (Map.Entry<UserType, StaticUser> e : map.entrySet()) {
+                UserType userType = e.getKey();
+                StaticUser user = e.getValue();
+                Queue<StaticUser> queue = getQueueByUserType(userType.value());
+                queue.add(user);
+            }
         }
     }
 

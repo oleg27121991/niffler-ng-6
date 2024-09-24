@@ -1,7 +1,7 @@
 package guru.qa.niffler.test.web;
 
 import com.codeborne.selenide.Selenide;
-import guru.qa.niffler.jupiter.annotation.AddCategory;
+import guru.qa.niffler.jupiter.annotation.Category;
 import guru.qa.niffler.jupiter.annotation.User;
 import guru.qa.niffler.model.CategoryJson;
 import guru.qa.niffler.page.LoginPage;
@@ -20,7 +20,7 @@ public class ProfileTest extends BaseWebTest {
     @User(
             username = "oleg",
             categories = {
-                    @AddCategory(isCategoryArchive = true)
+                    @Category(archived = true)
             }
     )
     void testArchivedCategoryShouldPresentInCategoriesList(CategoryJson category) {
@@ -45,7 +45,7 @@ public class ProfileTest extends BaseWebTest {
     @User(
             username = "oleg",
             categories = {
-                    @AddCategory(isCategoryArchive = false)
+                    @Category(archived = false)
             }
     )
     void testActiveCategoryShouldPresentInCategoriesList(CategoryJson category) {
