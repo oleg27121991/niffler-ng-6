@@ -8,7 +8,17 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
 public class MainPage {
-  private final ElementsCollection tableRows = $("#spendings tbody").$$("tr");
+  private final ElementsCollection
+          tableRows = $("#spendings tbody").$$("tr");
+
+  private final SelenideElement
+          spendingHistoryTable = $("#spendings"),
+          spendingStatisticsCanvas = $("#stat"),
+          accountMenuBtn = $("button[aria-label='Menu']"),
+          profileLink = $("a[href='/profile']"),
+          personIcon = $("[data-testid='PersonIcon']"),
+          friendsLink = $("a[href='/people/friends']"),
+          allPeopleLink = $("a[href='/people/all']");
 
   public EditSpendingPage editSpending(String spendingDescription) {
     tableRows.find(text(spendingDescription)).$$("td").get(5).click();
@@ -18,9 +28,6 @@ public class MainPage {
   public void checkThatTableContainsSpending(String spendingDescription) {
     tableRows.find(text(spendingDescription)).should(visible);
   }
-
-  private final SelenideElement spendingHistoryTable = $("#spendings");
-  private final SelenideElement spendingStatisticsCanvas = $("#stat");
 
   public void isSpendingStatisticsDisplayed() {
     spendingStatisticsCanvas.shouldBe(visible);
@@ -32,18 +39,11 @@ public class MainPage {
     return this;
   }
 
-  private final SelenideElement accountMenuBtn = $("button[aria-label='Menu']");
-  private final SelenideElement profileLink = $("a[href='/profile']");
-
   public ProfilePage openProfile() {
     accountMenuBtn.click();
     profileLink.click();
     return new ProfilePage();
   }
-
-  private final SelenideElement personIcon = $("[data-testid='PersonIcon']");
-  private final SelenideElement friendsLink = $("a[href='/people/friends']");
-  private final SelenideElement allPeopleLink = $("a[href='/people/all']");
 
   public FriendsPage openFriends() {
     personIcon.click();

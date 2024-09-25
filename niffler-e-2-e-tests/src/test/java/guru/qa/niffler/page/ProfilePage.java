@@ -12,12 +12,12 @@ public class ProfilePage {
 
     private final SelenideElement showArchivedCategoriesCheckbox = $("input[type='checkbox']");
 
+    private final ElementsCollection categoriesList = $$(".MuiChip-filled");
+
     public ProfilePage setArvedCategoriesVisible() {
         showArchivedCategoriesCheckbox.click();
         return this;
     }
-
-    private final ElementsCollection categoriesList = $$(".MuiChip-filled");
 
     public void categoriesShouldBeVisible(String category) {
         categoriesList.findBy(text(category)).shouldBe(visible);

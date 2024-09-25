@@ -1,11 +1,12 @@
 package guru.qa.niffler.jupiter.extension;
 
-import guru.qa.niffler.api.SpendApiClient;
 import guru.qa.niffler.jupiter.annotation.Spending;
 import guru.qa.niffler.jupiter.annotation.User;
 import guru.qa.niffler.model.CategoryJson;
 import guru.qa.niffler.model.CurrencyValues;
 import guru.qa.niffler.model.SpendJson;
+import guru.qa.niffler.service.CategoryDbClient;
+import guru.qa.niffler.service.SpendDbClient;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
@@ -19,7 +20,8 @@ public class SpendingExtension implements BeforeEachCallback, ParameterResolver 
 
     public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(SpendingExtension.class);
 
-    private final SpendApiClient spendApiClient = new SpendApiClient();
+    private final SpendDbClient spendDbClient = new SpendDbClient();
+    private final CategoryDbClient categoryDbClient = new CategoryDbClient();
 
     @Override
     public void beforeEach(ExtensionContext context) {
@@ -28,15 +30,20 @@ public class SpendingExtension implements BeforeEachCallback, ParameterResolver 
                     if (anno.spending().length > 0) {
                         Spending spending = anno.spending()[0];
 
+                        CategoryJson category = new CategoryJson(
+                                null,
+                                spending.category(),
+                                anno.username(),
+                                false
+                        );
+
+                        // Проверка существования категории
+                        CategoryJson createdCategory = categoryDbClient.createCategoryJson(category);
+
                         SpendJson spend = new SpendJson(
                                 null,
                                 new Date(),
-                                new CategoryJson(
-                                        null,
-                                        spending.category(),
-                                        anno.username(),
-                                        false
-                                ),
+                                createdCategory,
                                 CurrencyValues.RUB,
                                 spending.amount(),
                                 spending.description(),
@@ -44,7 +51,7 @@ public class SpendingExtension implements BeforeEachCallback, ParameterResolver 
                         );
                         context.getStore(NAMESPACE).put(
                                 context.getUniqueId(),
-                                spendApiClient.createSpend(spend)
+                                spendDbClient.createSpend(spend)
                         );
                     }
                 });
